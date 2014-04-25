@@ -1,0 +1,114 @@
+<%include file="header-jquery.html" />
+<script type="text/javascript">
+<%include file="js/createlinkedslider.js" />
+</script>
+
+<p>
+
+  You can set the parameters of the 3d mesh segmentation algorithm.
+
+</p>
+
+<form action="${app.base_url + 'wait'}" method="get">
+  <div class="action">
+
+    
+    <input type="hidden" name="key" value="${app.key}">
+    <ul>
+
+	  <li>
+            <!-- code for slider -->
+            <div style="float:left;padding-right:25px">
+            <label for="gridsize">grid size <font color="blue"><i>g</i></font>:</label>
+             <input type="text" style="font-family:monospace;text-align:right"
+                size="4" id="gridsize" name="gridsize" value="2" />
+            </div>
+            <div id="gridsize_slider" name="gridsize_slider" style="width:280px;float:left;margin-top:4px;font-size:10pt"></div>
+            <script type="text/javascript">
+            // Turn DIV slider into a slider linked to scale
+            $(document).ready(function() {
+                  createLinkedSlider('#gridsize', '#gridsize_slider', 2, 16, 1);
+            });
+            </script>
+            <div style="clear:both"> </div>
+            <!-- end of code for slider -->
+        </li>
+
+
+
+	  <li>
+            <!-- code for slider -->
+            <div style="float:left;padding-right:25px">
+            <label for="areathreshold">area threshold <font color="blue"><i>a</i></font>:</label>
+             <input type="text" style="font-family:monospace;text-align:right"
+                size="4" id="areathreshold" name="areathreshold" value="300" />
+            </div>
+            <div id="areathreshold_slider" name="areathreshold_slider" style="width:280px;float:left;margin-top:4px;font-size:10pt"></div>
+            <script type="text/javascript">
+            // Turn DIV slider into a slider linked to scale
+            $(document).ready(function() {
+                  createLinkedSlider('#areathreshold', '#areathreshold_slider', 100, 1000, 1);
+            });
+            </script>
+            <div style="clear:both"> </div>
+            <!-- end of code for slider -->
+        </li>
+
+
+
+	  <li>
+            <!-- code for slider -->
+            <div style="float:left;padding-right:25px">
+            <label for="slenderness_ratio_threshold">slenderness ratio threshold <font color="blue"><i>s</i></font>:</label>
+             <input type="text" style="font-family:monospace;text-align:right"
+                size="4" id="slenderness_ratio_threshold" name="slenderness_ratio_threshold" value="2" />
+            </div>
+            <div id="slenderness_ratio_threshold_slider" name="slenderness_ratio_threshold_slider" style="width:280px;float:left;margin-top:4px;font-size:10pt"></div>
+            <script type="text/javascript">
+            // Turn DIV slider into a slider linked to scale
+            $(document).ready(function() {
+                  createLinkedSlider('#slenderness_ratio_threshold', '#slenderness_ratio_threshold_slider', 1, 5, 1);
+            });
+            </script>
+            <div style="clear:both"> </div>
+            <!-- end of code for slider -->
+        </li>
+
+	  <li>
+            <!-- code for slider -->
+            <div style="float:left;padding-right:25px">
+            <label for="minimum_length_threshold">minimum length threshold <font color="blue"><i>m</i></font>:</label>
+             <input type="text" style="font-family:monospace;text-align:right"
+                    size="4" id="minimum_length_threshold" name="minimum_length_threshold" value="5" />
+            </div>
+            <div id="minimum_length_threshold_slider" name="minimum_length_threshold_slider" style="width:280px;float:left;margin-top:4px;font-size:10pt"></div>
+            <script type="text/javascript">
+            // Turn DIV slider into a slider linked to scale
+            $(document).ready(function() {
+                  createLinkedSlider('#minimum_length_threshold', '#minimum_length_threshold_slider', 1, 10, 1);
+            });
+            </script>
+            <div style="clear:both"> </div>
+            <!-- end of code for slider -->
+        </li>
+
+
+    </ul>
+  </p>
+
+
+
+    <BR>
+    Run the algorithm <input type="submit"  name="action" value="run" />
+  </div>
+
+</form>
+
+<hr/>
+
+<div>
+  <img src="${app.work_url + 'input_0.png'}" alt="" />
+</div>
+
+
+<%include file="footer.html" />

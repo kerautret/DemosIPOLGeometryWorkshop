@@ -1,0 +1,157 @@
+<%include file="header.html" />
+
+<META NAME="Author" CONTENT="JSC3D">
+
+
+<p>
+  
+<ul>
+<li> The algorithm was applied with by the following parameters:
+		<ul>
+		<li> grid size <font color="blue"><i>g</i></font>: ${app.cfg['param']['gridsize']} </li>
+		<li>area threshold  <font color="blue"><i>a</i></font>: ${app.cfg['param']['areathreshold']}</li>
+		<li> slenderness ratio threshold <font color="blue"><i>s</i></font>: ${app.cfg['param']['slenderness_ratio_threshold']}</li>
+		<li> minimum length threshold <font color="blue"><i>m</i></font>: ${app.cfg['param']['minimum_length_threshold']}</li>
+	
+		</ul></li>
+
+<li> The resulting shape presents<font color="red"> ${app.cfg['param']['nbcomp']} components</font></li>
+<li> The computation time was <font color="red"> ${app.cfg['param']['run_time']} s </font></li>
+</ul>
+</p>
+
+
+
+<BR>
+<BR>
+<form action="${app.base_url}" method="get">
+  <div class="action">
+    Restart this algorithm with new data.
+    <input type="submit" value="new input" />
+  </div>
+</form>
+
+<form action="${app.base_url + 'params'}" method="get">
+  <div class="action">
+    Restart this algorithm with new parameters.
+    <input type="hidden" name="key" value="${app.key}">
+    <input type="hidden" name="newrun" value="1">
+    <input type="submit" value="new parameters" />
+  </div>
+</form>
+
+<hr />
+
+<h2>Result</h2>
+
+
+
+<p>You can download the result in obj format: <a href="${app.work_url+'ol_segment.obj'}"> ol_segment.obj </a>,  <a href="${app.work_url+'ol_color.mtl'}"> ol_color.mtl </a> and also <a href="${app.work_url+'inputMesh_0.obj'}"> the initial mesh file </a> </p>
+
+
+
+<div class="gallery" style="height:${height}px">
+  <ul class="index">
+
+
+  <li>
+      <a href="${app.work_url + 'input_0.png'}">input
+	<span>
+	  <img height="${height}px" src="${app.work_url + 'input_0.png'}" alt="input" />
+	</span>
+      </a>
+    </li>
+    <li> <a href="#" >Result: 3d visualisation
+      <span>
+	<div style="width:490px; margin:auto; position:relative; font-size: 9pt; color: #777777;">
+	<canvas id="cv" style="border: 1px solid;" width="${width}px" height="${height}px">
+    The visualisation used jsc3d, it looks that your navigator does not supported it, please simply download the files  ol_segment.obj and  ol_segment.mtl and use a standard 3d viewer.
+	</canvas> </div>
+	<script type="text/javascript" src="http://demo.ipol.im/demo/74/static/jsc3d.js"></script>
+	<script type="text/javascript">
+	var canvas = document.getElementById('cv');
+	var viewer = new JSC3D.Viewer(canvas);
+	var logoTimerID = 0;
+	viewer.setParameter('InitRotationX', -20);
+	viewer.setParameter('InitRotationY', 20);
+	viewer.setParameter('InitRotationZ', 0);
+	viewer.setParameter('ModelColor', '#808080');
+	viewer.setParameter('BackgroundColor1', '#FFFFFF');
+	viewer.setParameter('BackgroundColor2', '#EEEEFF');
+	viewer.setParameter('RenderMode', 'smooth');
+	viewer.init();
+	viewer.update();
+
+	viewer.enableDefaultInputHandler(false);
+	logoTimerID = setInterval( function() {
+		viewer.rotate(0, 10, 0);
+		viewer.update();
+	}, 100);
+	setTimeout( function() {
+		viewer.enableDefaultInputHandler(true);
+		if(logoTimerID > 0)
+			loadModel();
+	}, 80);
+
+	var ctx = canvas.getContext('2d');
+	ctx.font = '12px Courier New';
+	ctx.fillStyle = '#FF0000';
+
+	viewer.afterupdate = function() {
+		if(logoTimerID > 0)
+			return;
+
+		var scene = viewer.getScene();
+		if(scene != null && scene.getChildren().length > 0) {
+			var objects = scene.getChildren();
+			var totalFaceCount = 0;
+			var totalVertexCount = 0
+			for(var i=0; i<objects.length; i++) {
+				totalFaceCount += objects[i].faceCount;
+				totalVertexCount += objects[i].vertexBuffer.length / 3;
+			}
+			ctx.fillText(totalVertexCount.toString() + ' vertices', 10, 20);
+			ctx.fillText(totalFaceCount.toString() + ' faces', 10, 35);
+		}
+
+	};
+
+	function loadModel() {
+		if(logoTimerID > 0) {
+			clearInterval(logoTimerID);
+			logoTimerID = 0;
+			viewer.enableDefaultInputHandler(true);
+		}
+		viewer.replaceSceneFromUrl("${app.work_url + 'ol_segment.obj'}");
+		viewer.update();
+	}
+
+	</script>
+
+	</span>   </a></li>
+
+
+  </ul>
+</div>
+
+
+<h2>
+  <a class="toggle" href="#commands" onclick="toggle('commands');">
+    Additional Info
+  </a>
+</h2>
+<div id="commands" style="display:none">
+<p>The algorithm ran with the following commands:
+<pre class="stdio"> ${app.commands} </pre>
+</p>
+<p>
+The main output is available <a href="${app.work_url + 'runlog.txt'}"> here</a>.
+</p>
+</div>
+
+
+<hr />
+
+
+<%include file="footer.html" />
+<%include file="archive_info.html" />
